@@ -9,6 +9,7 @@ class Matrici {
 private:
 	int n;
 	int m;
+	bool diagonalizabila;
 	vector<vector<int>>U;
 	vector<vector<int>>A;
 	vector<vector<int>>V;
@@ -20,8 +21,10 @@ private:
 	void oPij(int, int);
 	int divide(int);
 	void min(int);
+	int minC(int);
+	int minL(int);
 	void proceseasa(int);
-	void diagonalizeaza();
+	int diagonalizeaza();
 public:
 	Matrici();
 	void meniu();

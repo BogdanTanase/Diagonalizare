@@ -3,6 +3,7 @@
 using namespace std;
 
 Matrici::Matrici() {
+	diagonalizabila = true;
 	cout << "n=";
 	cin >> n;
 	cout << "m=";
@@ -52,10 +53,15 @@ void Matrici::meniu() {
 	int decizie = 11;
 	int i, j, x;
 	while (decizie != 10) {
-		cout << "|=================================|\n";
-		cout << "| Tijo- 0 oTij- 1 Pijo- 2 oPij- 3 |\n";
-		cout << "|    U- 4    A- 5    V- 6    D- 7 |\n";
-		cout << "|=================================|\n";
+		cout << "**Diagonalizatron V2.7 By Tanase Bogdan**\n";
+		cout << "|=======================================|\n";
+		cout << "| Tij*: 0 | *Tij: 1 | Pij*: 2 | *Pij: 3 |\n";
+		cout << "|---------------------------------------|\n";
+		cout << "|    U: 4 |    A: 5 |    V: 6 |    D: 7 |\n";
+		cout << "|---------------------------------------|\n";
+		cout << "| Diagonalizare:  8 |         | Exit:10 |\n";
+		cout << "|=======================================|\n";
+		cout << " Decizie :";
 		cin >> decizie;
 		switch (decizie) {
 		case 0: {
@@ -121,9 +127,7 @@ void Matrici::meniu() {
 			break;
 		}
 		case 8: {
-			break;
-		}
-		case 9: {
+			diagonalizeaza();
 			break;
 		}
 		}
@@ -190,13 +194,98 @@ int Matrici::divide(int k) {
 
 }//1 nu divide pe coloana , 2 nu divide pe linie , 3 e 0 , 0 ok
 void Matrici::min(int k) {
-	int is, ij;
+	int is = k;
+	int js = k;
 	int min = D[k][k];
 
+	for (int i = k; i < n; i++) {
+		for (int j = k; j < m; j++) {
+			if (min * min > D[i][j] * D[i][j] && D[i][j] != 0) {
+				min = D[i][j];
+				is = i;
+				js = j;
+			}
+		}
+	}
+	if (is == k && js != k) {
+		oPij(k, js);
+	}
+	if (is != k && js == k) {
+		Pijo(k, is);
+	}
+	if (is != k && js != k) {
+		oPij(k, js);
+		Pijo(is, k);
+	}
+}
+int Matrici::minL(int k) {
+	int min = D[k][k + 1];
+	int js = k + 1;
+	for (int j = k + 1; j < m; j++) {
+		if (min * min < D[k][j] * D[k][j] && D[k][j] != 0) {
+			min = D[k][j];
+			js = j;
+		}
+	}
+	return js;
+}
+int Matrici::minC(int k) {
+	int min = D[k + 1][k];
+	int is = k + 1;
+	for (int i = k + 1; i < n; i++) {
+		if (min * min < D[i][k] * D[i][k] && D[i][k] != 0) {
+			min = D[i][k];
+			is = i;
+		}
+	}
+	return is;
 }
 void Matrici::proceseasa(int k) {
-
+	for (int i = k + 1; i < n; i++) {
+		Tijo(i, k, (D[i][k] / D[k][k])*(-1));
+	}
+	for (int j = k + 1; j < m; j++) {
+		oTij(k, j, (D[k][j] / D[k][k])*(-1));
+	}
 }
-void Matrici::diagonalizeaza() {
-
+int Matrici::diagonalizeaza() {
+	if (diagonalizabila == false) {
+		cout << "Matrica este deja in forma diagonalizata";
+		return 1;
+	}
+	else {
+		diagonalizabila = false;
+		int stop = n;
+		if (m < n) {
+			stop = m;
+		}
+		int caz = 11;
+		for (int k = 0; k < stop; k++) {
+			min(k);
+			caz = divide(k);
+			switch (caz) {
+			case 0: {
+				proceseasa(k);
+				break;
+			}
+			case 1: { //coloana
+				int i = minC(k);
+				Tijo(i, k, (D[i][k] / D[k][k])*(-1));
+				k--;
+				break;
+			}
+			case 2: {//linie
+				int j = minL(k);
+				oTij(k, j, (D[k][j] / D[k][k])*(-1));
+				k--;
+				break;
+			}
+			case 3: {
+				return 0;
+				break;
+			}
+			}
+		}
+		return 0;
+	}
 }
