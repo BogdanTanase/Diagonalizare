@@ -14,14 +14,14 @@ private:
 	vector<vector<int>>V;
 	vector<vector<int>>D;
 
-	void Tijo(int, int);
-	void oTij(int, int);
+	void Tijo(int, int, int);
+	void oTij(int, int, int);
 	void Pijo(int, int);
 	void oPij(int, int);
 	int divide(int);
-	void max(int);
+	void min(int);
 	void proceseasa(int);
-
+	void diagonalizeaza();
 public:
 	Matrici();
 	void meniu();
