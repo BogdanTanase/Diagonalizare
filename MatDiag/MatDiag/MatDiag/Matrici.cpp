@@ -91,6 +91,7 @@ void Matrici::meniu() {
 			break;
 		}
 		case 4: {
+			cout << "Matricea U:\n";
 			for (int i = 0; i < n; i++) {
 				for (int j = 0; j < n; j++) {
 					cout << U[i][j] << " ";
@@ -100,6 +101,7 @@ void Matrici::meniu() {
 			break;
 		}
 		case 5: {
+			cout << "Matricea A:\n";
 			for (int i = 0; i < n; i++) {
 				for (int j = 0; j < m; j++) {
 					cout << A[i][j] << " ";
@@ -109,6 +111,7 @@ void Matrici::meniu() {
 			break;
 		}
 		case 6: {
+			cout << " Matrcicea V:\n";
 			for (int i = 0; i < m; i++) {
 				for (int j = 0; j < m; j++) {
 					cout << V[i][j] << " ";
@@ -118,6 +121,7 @@ void Matrici::meniu() {
 			break;
 		}
 		case 7: {
+			cout << " Matricea D:\n";
 			for (int i = 0; i < n; i++) {
 				for (int j = 0; j < m; j++) {
 					cout << D[i][j] << " ";
@@ -200,7 +204,7 @@ void Matrici::min(int k) {
 
 	for (int i = k; i < n; i++) {
 		for (int j = k; j < m; j++) {
-			if (min * min > D[i][j] * D[i][j] && D[i][j] != 0) {
+			if (min * min > D[i][j] * D[i][j] && D[i][j] != 0 && min * min != D[i][j] * D[i][j]) {
 				min = D[i][j];
 				is = i;
 				js = j;
