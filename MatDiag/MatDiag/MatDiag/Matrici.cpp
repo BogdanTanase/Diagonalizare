@@ -143,7 +143,7 @@ void Matrici::Tijo(int i, int j, int x) {
 		D[i][a] += D[j][a] * x;
 	}
 	for (int a = 0; a < n; a++) {
-		U[a][j] += U[a][i] * x;
+		U[i][a] += U[j][a] * x;
 	}
 }
 void Matrici::oTij(int i, int j, int x) {
@@ -161,9 +161,9 @@ void Matrici::Pijo(int i, int j) {
 		D[j][a] = tmp;
 	}
 	for (int a = 0; a < n; a++) {
-		int tmp = U[a][j]; 
-		U[a][j] = U[a][i];
-		U[a][i] = tmp;
+		int tmp = U[j][a]; 
+		U[j][a] = U[i][a];
+		U[i][a] = tmp;
 	}
 }
 void Matrici::oPij(int i, int j) {
@@ -201,6 +201,9 @@ void Matrici::min(int k) {
 	int is = k;
 	int js = k;
 	int min = D[k][k];
+	if (min == 0) {
+		min = 46340; // max int 
+	}
 
 	for (int i = k; i < n; i++) {
 		for (int j = k; j < m; j++) {
@@ -223,22 +226,22 @@ void Matrici::min(int k) {
 	}
 }
 int Matrici::minL(int k) {
-	int min = D[k][k + 1];
+	int min = D[k][k + 1] % D[k][k];
 	int js = k + 1;
 	for (int j = k + 1; j < m; j++) {
-		if (min * min < D[k][j] * D[k][j] && D[k][j] != 0) {
-			min = D[k][j];
+		if ( min < D[k][j] % D[k][k] && D[k][j] != 0 && D[k][j] % D[k][k] != 0) {
+			min = D[k][j] % D[k][k];
 			js = j;
 		}
 	}
 	return js;
 }
 int Matrici::minC(int k) {
-	int min = D[k + 1][k];
+	int min = D[k + 1][k] % D[k][k];
 	int is = k + 1;
 	for (int i = k + 1; i < n; i++) {
-		if (min * min < D[i][k] * D[i][k] && D[i][k] != 0) {
-			min = D[i][k];
+		if ( min < D[i][k] % D[k][k] && D[i][k] != 0 && D[i][k] % D[k][k] != 0) {
+			min = D[i][k] % D[k][k];
 			is = i;
 		}
 	}
@@ -293,3 +296,4 @@ int Matrici::diagonalizeaza() {
 		return 0;
 	}
 }
+
